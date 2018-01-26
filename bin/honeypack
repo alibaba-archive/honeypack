@@ -1,0 +1,12 @@
+#!/usr/bin/env node
+'use strict';
+
+const program = require('commander');
+const pkg = require('../package.json');
+
+program
+  .version(pkg.version)
+  .usage('')
+  .command('start', 'Start a dev server')
+  .command('build', 'Build the app for production')
+  .parse(process.argv);

@@ -1,0 +1,60 @@
+#!/usr/bin/env node
+'use strict';
+
+const program = require('commander');
+const path = require('path');
+const fs = require('fs');
+const webpack = require('webpack');
+const WebpackDevServer = require('webpack-dev-server');
+const merge = require('../lib/merge');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const dllConfigGen = require('../config/dllConfigGen.js');
+const dllConfig = dllConfigGen(false);
+const utils = require('../lib/utils');
+
+program
+  .option('-p, --port [port]', 'Specify a port number to listen on')
+  .option('-c, --config [config]', 'Path to the app config file, default is webpack.config.js')
+  .parse(process.argv);
+
+const port = program.port || 8080;
+const configPath = path.resolve(process.cwd(), program.config || 'webpack.config.js');
+const cliConfig = {
+  plugins: [
+    // 把静态资源注入html的plugins
+    new HtmlWebpackPlugin({template: path.resolve('./index.html'), filename: 'index.html'}),
+    new webpack.DllReferencePlugin({
+      context: process.cwd(),
+      manifest: path.resolve(process.cwd(), '.build', 'manifest.json')
+    })
+  ]
+};
+
+function startServer () {
+  const webpackDevConfig = require('../config/webpack.dev');
+
+  let webpackAppConfig = {};
+  if (fs.existsSync(configPath)) {
+    webpackAppConfig = require(configPath);
+  }
+  const webpackFinalConfig = utils.unPlugins(merge(webpackDevConfig, cliConfig, webpackAppConfig));
+  // console.log(JSON.stringify(webpackFinalConfig, null, 2));
+  // output loaders, plugins
+  const compiler = webpack(webpackFinalConfig);
+  const server = new WebpackDevServer(compiler, webpackFinalConfig.devServer || {});
+  server.listen(port, '127.0.0.1', () => {
+    console.log('Starting server on http://localhost:' + port);  // eslint-disable-line no-console
+  });
+}
+
+if (fs.existsSync(path.join(process.cwd(), '.build', 'build.js'))) {
+  startServer();
+} else {
+  webpack(dllConfig).run((err) => {
+    if (err) {
+      console.log(err); // eslint-disable-line no-console
+      return;
+    }
+    startServer();
+  });
+}

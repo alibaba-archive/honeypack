@@ -1,0 +1,43 @@
+#!/usr/bin/env node
+'use strict';
+
+const program = require('commander');
+const path = require('path');
+const fs = require('fs');
+const webpack = require('webpack');
+const merge = require('../lib/merge');
+const webpackProdConfig = require('../config/webpack.prod');
+const utils = require('../lib/utils');
+
+program
+  .option('-c, --config [config]', 'Path to the app config file, default is webpack.config.js')
+  .parse(process.argv);
+
+const configPath = path.resolve(process.cwd(), program.config || 'webpack.config.js');
+const cliConfig = {
+  plugins: [
+    new webpack.ProgressPlugin()
+  ]
+};
+let webpackAppConfig = {};
+
+if (fs.existsSync(configPath)) {
+  webpackAppConfig = require(configPath);
+}
+
+const webpackFinalConfig = utils.unPlugins(merge(webpackProdConfig, cliConfig, webpackAppConfig));
+// output loaders, plugins
+const compiler = webpack(webpackFinalConfig);
+
+compiler.run((err, stats) => {
+  if (err) {
+    console.error(err);  // eslint-disable-line no-console
+    return;
+  }
+
+  console.log(stats.toString({  // eslint-disable-line no-console
+    chunks: false,  // Makes the build much quieter
+    colors: true,    // Shows colors in the console
+    children: false
+  }));
+});
