@@ -97,6 +97,41 @@ Honeypack will automaticly merge app's webpack config if there is a `webpack.con
   + Cli mode: current working directory
   + Middleware mode: assets directory
 
+### example
+
+```
+// webpack.config.js
+
+module.exports = {
+  entry: {
+
+  },
+  output: {
+
+  },
+  module: {
+    rules: [
+      /* default rules
+      test: /\.css$/
+      test: /\.less$/
+      test: /\.(png|svg|jpg|gif)$/
+      test: /\.(woff|woff2|eot|ttf|otf)$/
+      test: /\.(js|jsx)$/
+      */
+      // we will merge loaders based on test
+    ]
+  },
+  plugins: [
+
+  ],
+  unPlugins: [
+    // string, a plugin to remove, e.g. 'UglifyJsPlugin'
+  ]
+};
+```
+
+Learn more about webpack config [here](https://webpack.js.org/concepts/).
+
 <h2 align="center">Bundle Analysis</h2>
 
 ### Install
