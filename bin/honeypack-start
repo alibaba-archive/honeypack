@@ -37,7 +37,7 @@ function startServer () {
   if (fs.existsSync(configPath)) {
     webpackAppConfig = require(configPath);
   }
-  const webpackFinalConfig = utils.unPlugins(merge(webpackDevConfig, cliConfig, webpackAppConfig));
+  const webpackFinalConfig = utils.unLoaders(utils.unPlugins(merge(webpackDevConfig, cliConfig, webpackAppConfig)));
   // console.log(JSON.stringify(webpackFinalConfig, null, 2));
   // output loaders, plugins
   const compiler = webpack(webpackFinalConfig);
