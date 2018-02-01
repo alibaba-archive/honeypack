@@ -23,11 +23,7 @@ const configPath = path.resolve(process.cwd(), program.config || 'webpack.config
 const cliConfig = {
   plugins: [
     // 把静态资源注入html的plugins
-    new HtmlWebpackPlugin({template: path.resolve('./index.html'), filename: 'index.html'}),
-    new webpack.DllReferencePlugin({
-      context: process.cwd(),
-      manifest: path.resolve(process.cwd(), '.build', 'manifest.json')
-    })
+    new HtmlWebpackPlugin({template: path.resolve('./index.html'), filename: 'index.html'})
   ]
 };
 
@@ -37,6 +33,14 @@ function startServer () {
   let webpackAppConfig = {};
   if (fs.existsSync(configPath)) {
     webpackAppConfig = require(configPath);
+  }
+  if(!program.nodll){
+    cliConfig.plugins.push(
+      new webpack.DllReferencePlugin({
+        context: process.cwd(),
+        manifest: path.resolve(process.cwd(), '.build', 'manifest.json')
+      })
+    );
   }
   const webpackFinalConfig = utils.unPlugins(merge(webpackDevConfig, cliConfig, webpackAppConfig));
   // console.log(JSON.stringify(webpackFinalConfig, null, 2));
