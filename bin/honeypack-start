@@ -15,7 +15,7 @@ const utils = require('../lib/utils');
 program
   .option('-p, --port [port]', 'Specify a port number to listen on')
   .option('-c, --config [config]', 'Path to the app config file, default is webpack.config.js')
-  .option('-n, --nodll', 'disable dll')
+  .option('-n, --no-dll', 'disable dll')
   .parse(process.argv);
 
 const port = program.port || 8080;
@@ -34,7 +34,7 @@ function startServer () {
   if (fs.existsSync(configPath)) {
     webpackAppConfig = require(configPath);
   }
-  if(!program.nodll){
+  if(!program.dll){
     cliConfig.plugins.push(
       new webpack.DllReferencePlugin({
         context: process.cwd(),
@@ -52,7 +52,7 @@ function startServer () {
   });
 }
 
-if (program.nodll || fs.existsSync(path.join(process.cwd(), '.build', 'build.js'))) {
+if (program.dll || fs.existsSync(path.join(process.cwd(), '.build', 'build.js'))) {
   startServer();
 } else {
   webpack(dllConfig).run((err) => {
