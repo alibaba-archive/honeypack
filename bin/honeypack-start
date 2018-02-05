@@ -34,7 +34,7 @@ function startServer () {
   if (fs.existsSync(configPath)) {
     webpackAppConfig = require(configPath);
   }
-  if (!program.dll) {
+  if (program.dll !== false) {
     cliConfig.plugins.push(
       new webpack.DllReferencePlugin({
         context: process.cwd(),
@@ -51,7 +51,7 @@ function startServer () {
     console.log('Starting server on http://localhost:' + port);  // eslint-disable-line no-console
   });
 }
-if (!program.dll || fs.existsSync(path.join(process.cwd(), '.build', 'build.js'))) {
+if (program.dll === false || fs.existsSync(path.join(process.cwd(), '.build', 'build.js'))) {
   startServer();
 } else {
   webpack(dllConfig).run((err) => {
