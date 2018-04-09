@@ -1,6 +1,6 @@
 {
   "name": "honeypack",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "honeypack is a combination of webpack-dev-server and webpack-dev-middleware, which provides full featured and scalable configuration to bundle assets",
   "main": "lib/middleware.js",
   "bin": {
