@@ -21,10 +21,16 @@ program
 const port = program.port || 8080;
 const configPath = path.resolve(process.cwd(), program.config || 'webpack.config.js');
 const cliConfig = {
+  output: {
+    publicPath: '/'
+  },
   plugins: [
     // 把静态资源注入html的plugins
     new HtmlWebpackPlugin({template: path.resolve('./index.html'), filename: 'index.html'})
-  ]
+  ],
+  devServer: {
+    historyApiFallback: true
+  }
 };
 
 function startServer () {
