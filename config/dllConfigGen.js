@@ -13,7 +13,7 @@ const vendors = [
   'redux-thunk'
 ];
 
-module.exports = (isMiddleware) => {
+module.exports = ({isMiddleware}) => {
   return {
     context: path.join(process.cwd(), 'assets'),
     resolve: {
@@ -25,7 +25,7 @@ module.exports = (isMiddleware) => {
       library: '[name]',
     },
     entry: {
-      'build': vendors,
+      build: vendors,
     },
     plugins: [
       new webpack.DefinePlugin({
