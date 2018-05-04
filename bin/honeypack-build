@@ -8,6 +8,7 @@ const webpack = require('webpack');
 const merge = require('../lib/merge');
 const webpackProdConfig = require('../config/webpack.prod');
 const utils = require('../lib/utils');
+const Control = require('../lib/control');
 
 program
   .option('-c, --config [config]', 'Path to the app config file, default is webpack.config.js')
@@ -25,7 +26,10 @@ if (fs.existsSync(configPath)) {
   webpackAppConfig = require(configPath);
 }
 
-const webpackFinalConfig = utils.unLoaders(utils.unPlugins(merge(webpackProdConfig, cliConfig, webpackAppConfig)));
+const {honeypackConfig} = webpackAppConfig;
+const control = new Control(honeypackConfig);
+delete webpackAppConfig.honeypackConfig;
+const webpackFinalConfig = utils.unLoaders(utils.unPlugins(merge(webpackProdConfig, cliConfig, webpackAppConfig, control)));
 // output loaders, plugins
 const compiler = webpack(webpackFinalConfig);
 
