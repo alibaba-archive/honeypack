@@ -26,7 +26,7 @@ if (fs.existsSync(configPath)) {
   webpackAppConfig = require(configPath);
 }
 
-const {honeypackConfig} = webpackAppConfig;
+const {honeypackConfig = {}} = webpackAppConfig;
 const {verbose} = honeypackConfig;
 const control = new Control(honeypackConfig);
 delete webpackAppConfig.honeypackConfig;
