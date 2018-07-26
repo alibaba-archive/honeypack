@@ -26,11 +26,16 @@ if (fs.existsSync(configPath)) {
   webpackAppConfig = require(configPath);
 }
 
-const {honeypackConfig} = webpackAppConfig;
+const {honeypackConfig = {}} = webpackAppConfig;
+const {verbose} = honeypackConfig;
 const control = new Control(honeypackConfig);
 delete webpackAppConfig.honeypackConfig;
 const webpackFinalConfig = utils.unLoaders(utils.unPlugins(merge(webpackProdConfig, cliConfig, webpackAppConfig, control)));
-// output loaders, plugins
+
+if (verbose) {
+  utils.print(webpackFinalConfig);
+}
+
 const compiler = webpack(webpackFinalConfig);
 
 compiler.run((err, stats) => {
