@@ -1,3 +1,6 @@
 {
-  "extends": "aliyun"
+  "extends": "aliyun",
+  "rules":{
+    "no-console":0
+  }
 }

@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "mocha --require intelli-espower-loader $(find test -name *.test.js)",
-    "cover": "istanbul cover _mocha -- $(find test -name *.test.js)"
+    "cover": "istanbul cover _mocha -- $(find test -name *.test.js)",
+    "lint": "eslint ./lib"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "less": "~2.7.2",
     "less-loader": "~4.0.4",
     "lodash": "~4.17.4",
+    "post-compile-webpack-plugin": "^0.1.2",
     "source-map-loader": "~0.2.1",
     "style-loader": "~0.18.2",
     "webpack": "~3.12.0",
