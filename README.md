@@ -1,159 +1,106 @@
 <h1 align="center">Honeypack</h1>
 
+![](https://img.shields.io/npm/v/honeypack.svg)
+
 Honeypack is a combination of webpack-dev-server and webpack-dev-middleware, which provides full featured and scalable configuration to bundle assets.
 
 <h2 align="center">Install</h2>
 
 ```
-npm i honeypack --save [-g]
+npm i honeypack --save-dev
 ```
 
-> With -g, honeypack will be installed globally.
+<h2 align="center">Migration from v0.x</h2>
+
+Please read our documentation on [migration](migration.md).
 
 <h2 align="center">Usage</h2>
 
-### CLI (globally)
+### CLI
 
 ```
-hoenypack
+honeypack --help
 
 >
 
+  Usage: honeypack [options]
+         honeypack <command> [options]
 
-Usage: honeypack [options] [command]
+  Options:
 
+    -v, --version        output the version number
+    -h, --help           output usage information
 
-Options:
+  Commands:
 
-  -V, --version  output the version number
-  -h, --help     output usage information
+    init [options]
+    run|start [options]
+    build [options]
+```
 
+#### Create new apps
 
-Commands:
+```
+honeypack init
 
-  start       Start a dev server
-  build       Build the app for production
-  help [cmd]  display help for [cmd]
+>
+
+  Usage: init [options]
+
+  Options:
+
+    -o, --output <name>  The config file name
+    --default            Skip questions, create the config file directly
+    -h, --help           output usage information
 ```
 
 #### Start as a dev server
 
 ```
-hoenypack start
+honeypack run|start
 
 >
 
-Usage: honeypack-start [options]
+  Usage: run|start [options]
 
+  Options:
 
-Options:
-
-  -p, --port [port]      Specify a port number to listen on
-  -c, --config [config]  Path to the app config file, default is webpack.config.js
-  -h, --help             output usage information
+    -c, --config <path>  Path to the config file, defaults to webpack.config.js
+    -h, --host <host>    The host to listen on, defaults to localhost
+    -p, --port <port>    The port to listen on, defaults to 8000
+    -h, --help           output usage information
 ```
 
 #### Build the app for production
 
 ```
-hoenypack build
+honeypack build
 
 >
 
-Usage: honeypack-build [options]
+  Usage: build [options]
 
+  Options:
 
-Options:
-
-  -c, --config [config]  Path to the app config file, default is webpack.config.js
-  -h, --help             output usage information
+    -c, --config <path>  Path to the config file, defaults to webpack.config.js
+    -h, --help           output usage information
 ```
 
-### Middleware (locally)
+### API
+
+#### Middleware
 
 ```
-// config.js
+const honeypack = require('honeypack');
+const express = require('express');
+const app = express();
 
-middleware: {
-  hoenypack: {
-    enable: true,
-    module: 'hoenypack',
-    config: {
-      root: './assets'
-    }
-  }
-}
+app.use(honeypack({
+  config: 'webpack.config.js',
+  root: './assets'
+}));
 ```
 
-+ config
++ config: the webpack config filename
 
-  + `root`: relative path to assets directory
-
-<h2 align="center">App's webpack config</h2>
-
-Honeypack will automaticly merge app's webpack config if there is a `webpack.config.js` in your project into default webpack config.
-
-+ path to `webpack.config.js`
-  + Cli mode: current working directory
-  + Middleware mode: assets directory
-
-### example
-
-```
-// webpack.config.js
-
-module.exports = {
-  entry: {
-
-  },
-  output: {
-
-  },
-  module: {
-    rules: [
-      /* default rules
-      test: /\.css$/
-      test: /\.less$/
-      test: /\.(png|svg|jpg|gif)$/
-      test: /\.(woff|woff2|eot|ttf|otf)$/
-      test: /\.(js|jsx)$/
-      */
-      // we will merge loaders based on test
-    ]
-  },
-  plugins: [
-
-  ],
-  unPlugins: [
-    // string, a plugin to remove, e.g. 'UglifyJsPlugin'
-  ]
-};
-```
-
-Learn more about webpack config [here](https://webpack.js.org/concepts/).
-
-<h2 align="center">Bundle Analysis</h2>
-
-### Install
-
-```
-npm install --save-dev webpack-bundle-analyzer
-```
-
-### Usage
-
-```
-// webpack.config.js
-
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-
-module.exports = {
-  plugins: [
-    new BundleAnalyzerPlugin()
-  ]
-};
-```
-
-### Run as usual
-
-Webpack Bundle Analyzer will start at http://127.0.0.1:8888
++ root: the directory contains your frontend assets
