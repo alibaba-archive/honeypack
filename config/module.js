@@ -25,8 +25,8 @@ function iModule(config) {
         presets: [`'env'`, `'react'`],
         plugins: [
           `'add-module-exports'`,
-          `'transform-class-properties'`,
           `'transform-decorators-legacy'`,
+          `'transform-class-properties'`,
           `'transform-object-rest-spread'`
         ]
       }
