@@ -21,7 +21,7 @@ function iModule(config) {
     use: {
       loader: `'babel-loader'`,
       options: {
-        cacheDirectory: `true`,
+        cacheDirectory: `path.join(__dirname, '.honeypack_cache/babel-loader')`,
         presets: [`'env'`, `'react'`],
         plugins: [
           `'add-module-exports'`,
