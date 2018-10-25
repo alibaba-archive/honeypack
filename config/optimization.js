@@ -6,15 +6,22 @@ function optimization(config) {
     default: true,
     when: !config._skipAllQuestions
   }]).then((ans) => {
+    config.config.optimization = {
+      minimizer: [
+        `new UglifyJsPlugin({
+          cache: path.join(__dirname, '.honeypack_cache/uglifyjs-webpack-plugin'),
+          parallel: true
+        })`
+      ]
+    };
+
     if (ans.optimization !== false) {
-      config.config.optimization = {
-        splitChunks: {
-          cacheGroups: {
-            commons: {
-              test: `module => /[\\\\/]node_modules[\\\\/]/.test(module.resource) && module.constructor.name !== 'CssModule'`,
-              name: `'vendor'`,
-              chunks: `'all'`
-            }
+      config.config.optimization.splitChunks = {
+        cacheGroups: {
+          commons: {
+            test: `module => /[\\\\/]node_modules[\\\\/]/.test(module.resource) && module.constructor.name !== 'CssModule'`,
+            name: `'vendor'`,
+            chunks: `'all'`
           }
         }
       };
