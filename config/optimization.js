@@ -1,3 +1,5 @@
+const {REQUIRE_WITH_CAMEL_CASE} = require('../lib/consts');
+
 function optimization(config) {
   return this.prompt([{
     type: 'confirm',
@@ -6,9 +8,10 @@ function optimization(config) {
     default: true,
     when: !config._skipAllQuestions
   }]).then((ans) => {
+    config.deps['uglifyjs-webpack-plugin'] = REQUIRE_WITH_CAMEL_CASE;
     config.config.optimization = {
       minimizer: [
-        `new UglifyJsPlugin({
+        `new UglifyjsWebpackPlugin({
           cache: path.join(__dirname, '.honeypack_cache/uglifyjs-webpack-plugin'),
           parallel: true
         })`
