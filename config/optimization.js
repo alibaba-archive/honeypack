@@ -8,11 +8,11 @@ function optimization(config) {
     default: true,
     when: !config._skipAllQuestions
   }]).then((ans) => {
-    config.deps['uglifyjs-webpack-plugin'] = REQUIRE_WITH_CAMEL_CASE;
+    config.deps['terser-webpack-plugin'] = REQUIRE_WITH_CAMEL_CASE;
     config.config.optimization = {
       minimizer: [
-        `new UglifyjsWebpackPlugin({
-          cache: path.join(__dirname, '.honeypack_cache/uglifyjs-webpack-plugin'),
+        `new TerserWebpackPlugin({
+          cache: path.join(__dirname, '.honeypack_cache/terser-webpack-plugin'),
           parallel: true
         })`
       ]
