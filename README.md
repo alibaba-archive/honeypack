@@ -2,7 +2,7 @@
 
 ![](https://img.shields.io/npm/v/honeypack.svg)
 
-Honeypack is a combination of webpack-dev-server and webpack-dev-middleware, which provides full featured and scalable configuration to bundle assets.
+Honeypack is a combination of webpack-dev-server and webpack-dev-middleware, which provides full featured and scalable configuration to bundle assets, and supports HMR.
 
 <h2 align="center">Install</h2>
 
@@ -97,10 +97,13 @@ const app = express();
 
 app.use(honeypack({
   config: 'webpack.config.js',
-  root: './assets'
+  root: './assets',
+  hot: false
 }));
 ```
 
 + config: the webpack config filename
 
 + root: the directory contains your frontend assets
+
++ hot: enable HMR
