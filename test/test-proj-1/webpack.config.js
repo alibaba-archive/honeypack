@@ -1,8 +1,10 @@
+// notice: this is a wrong webpack sample
 const path = require('path');
 
 const config = {
   context: __dirname,
-  entry: path.join(__dirname, './index.js'),
+  // index.jsx not exsit
+  entry: path.join(__dirname, './index.jsx'),
   output: {
     filename: 'index.js'
   },
